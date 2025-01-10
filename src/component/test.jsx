@@ -24,9 +24,8 @@ const InteractiveCard = ({ icon: Icon, title, children }) => {
     <motion.div
       layout
       onClick={() => setIsExpanded(!isExpanded)}
-      className={`bg-white/10 backdrop-blur-md rounded-xl p-6 cursor-pointer 
-        border border-white/20 hover:border-white/40 transition-all
-        ${isExpanded ? "md:col-span-3" : ""}`}
+      className="bg-white/10 backdrop-blur-md rounded-xl p-6 cursor-pointer 
+        border border-white/20 hover:border-white/40 transition-all w-full"
     >
       <motion.div layout className="flex items-center gap-3 mb-4">
         <div className="p-3 bg-white/20 rounded-full">
@@ -36,7 +35,7 @@ const InteractiveCard = ({ icon: Icon, title, children }) => {
           {title}
         </h3>
         <motion.div
-          animate={{ rotate: isExpanded ? 45 : 0 }}
+          animate={{ rotate: isExpanded ? 180 : 0 }}
           className="ml-auto"
         >
           <Plus className="w-5 h-5 text-white" />
@@ -48,7 +47,7 @@ const InteractiveCard = ({ icon: Icon, title, children }) => {
             initial={{ opacity: 0, height: 0 }}
             animate={{ opacity: 1, height: "auto" }}
             exit={{ opacity: 0, height: 0 }}
-            className="space-y-4 text-white/90 font-vietnam leading-relaxed"
+            className="space-y-4 text-white/90 font-vietnam leading-relaxed overflow-hidden"
           >
             {children}
           </motion.div>
@@ -258,6 +257,107 @@ const QuestionCard = ({ question, explanation }) => {
   );
 };
 
+// Interactive Timeline Component
+const InteractiveTimeline = ({ items }) => {
+  const [activeIndex, setActiveIndex] = useState(0);
+
+  return (
+    <div className="relative">
+      {/* Timeline Line */}
+      <div className="absolute left-1/2 top-0 bottom-0 w-1 bg-white/20 transform -translate-x-1/2" />
+
+      {/* Timeline Items */}
+      <div className="relative space-y-24">
+        {items.map((item, index) => (
+          <motion.div
+            key={index}
+            initial={{ opacity: 0 }}
+            whileInView={{ opacity: 1 }}
+            className={`flex items-center gap-8 ${
+              index % 2 === 0 ? "flex-row" : "flex-row-reverse"
+            }`}
+          >
+            {/* Content */}
+            <motion.div
+              initial={{ x: index % 2 === 0 ? -50 : 50, opacity: 0 }}
+              whileInView={{ x: 0, opacity: 1 }}
+              className="w-1/2 bg-white/10 backdrop-blur-md rounded-xl p-6 border border-white/20
+                hover:bg-white/20 transition-all cursor-pointer"
+              onClick={() => setActiveIndex(index)}
+            >
+              <h3 className="text-xl font-bold text-white mb-4">
+                {item.title}
+              </h3>
+              <p className="text-white/80">{item.content}</p>
+            </motion.div>
+
+            {/* Timeline Node */}
+            <div className="relative">
+              <motion.div
+                animate={{
+                  scale: activeIndex === index ? 1.2 : 1,
+                  backgroundColor:
+                    activeIndex === index ? "#60A5FA" : "#ffffff33",
+                }}
+                className="w-6 h-6 rounded-full bg-white/20 relative z-10"
+              />
+            </div>
+          </motion.div>
+        ))}
+      </div>
+    </div>
+  );
+};
+
+// Interactive Feature Card
+const FeatureCard = ({ icon: Icon, title, content, index }) => {
+  const [isHovered, setIsHovered] = useState(false);
+
+  return (
+    <motion.div
+      initial={{ opacity: 0, y: 20 }}
+      whileInView={{ opacity: 1, y: 0 }}
+      transition={{ delay: index * 0.1 }}
+      onHoverStart={() => setIsHovered(true)}
+      onHoverEnd={() => setIsHovered(false)}
+      className="relative group"
+    >
+      <div
+        className="absolute inset-0 bg-gradient-to-r from-blue-500/20 to-purple-500/20 rounded-xl 
+        blur-xl transition-opacity opacity-0 group-hover:opacity-100"
+      />
+
+      <div
+        className="relative bg-white/10 backdrop-blur-md rounded-xl p-6 border border-white/20
+        hover:border-white/40 transition-all"
+      >
+        <motion.div
+          animate={{
+            rotateY: isHovered ? 180 : 0,
+            opacity: isHovered ? 0 : 1,
+          }}
+          className="absolute inset-0 flex items-center justify-center"
+        >
+          <div className="p-4 bg-white/20 rounded-full">
+            <Icon className="w-8 h-8 text-white" />
+          </div>
+        </motion.div>
+
+        <motion.div
+          animate={{
+            rotateY: isHovered ? 0 : -180,
+            opacity: isHovered ? 1 : 0,
+          }}
+          className="space-y-4"
+        >
+          <h3 className="text-xl font-bold text-white">{title}</h3>
+          <p className="text-white/80">{content}</p>
+        </motion.div>
+      </div>
+    </motion.div>
+  );
+};
+
 // Section Components
 const Section1 = () => (
   <FullscreenSection
@@ -265,7 +365,7 @@ const Section1 = () => (
     title="I. Quan điểm cơ bản của chủ nghĩa Mác-Lênin"
     bgImage="https://images.unsplash.com/photo-1447069387593-a5de0862481e"
   >
-    <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
+    <div className="grid grid-cols-1 gap-6 max-w-3xl mx-auto">
       <InteractiveCard icon={Book} title="Khái niệm giai cấp công nhân">
         <p>
           Giai cấp công nhân là giai cấp trực tiếp tham gia vào quá trình sản
@@ -278,6 +378,7 @@ const Section1 = () => (
           hội mới.
         </p>
       </InteractiveCard>
+
       <InteractiveCard icon={Users} title="Đặc điểm cơ bản">
         <p>
           Về vị trí kinh tế - xã hội: Là sản phẩm của nền sản xuất công nghiệp
@@ -288,6 +389,7 @@ const Section1 = () => (
         </p>
         <p>Về tổ chức: Có tính tổ chức cao, kỷ luật nghiêm ngặt.</p>
       </InteractiveCard>
+
       <InteractiveCard icon={Target} title="Sứ mệnh lịch sử thế giới">
         <p>Lật đổ chế độ tư bản chủ nghĩa, xóa bỏ chế độ tư hữu tư bản.</p>
         <p>
@@ -306,54 +408,165 @@ const Section2 = () => (
     title="II. Giai cấp công nhân hiện nay"
     bgImage="https://images.unsplash.com/photo-1590650153855-d9e808231d41"
   >
-    <Timeline
-      items={[
-        {
-          title: "Bối cảnh hiện nay",
-          content:
-            "Quá trình toàn cầu hóa và cách mạng công nghiệp 4.0 đang tạo ra những biến đổi to lớn.",
-        },
-        {
-          title: "Thách thức",
-          content:
-            "Sự phân hóa giàu nghèo ngày càng sâu sắc trong xã hội tư bản.",
-        },
-        {
-          title: "Vai trò mới",
-          content:
-            "Tiếp tục giữ vai trò nòng cốt trong cuộc đấu tranh xã hội chủ nghĩa.",
-        },
-      ]}
-    />
+    <div className="max-w-6xl mx-auto">
+      <InteractiveTimeline
+        items={[
+          {
+            title: "Bối cảnh hiện nay",
+            content:
+              "Toàn cầu hóa và cách mạng công nghiệp 4.0 tạo biến đổi lớn trong cơ cấu kinh tế - xã hội. Mở rộng sang công nghiệp công nghệ cao, dịch vụ và tri thức.",
+          },
+          {
+            title: "Thách thức",
+            content:
+              "Phân hóa giàu nghèo ngày càng sâu sắc. Phân tầng trong nội bộ giai cấp công nhân. Ảnh hưởng của tư tưởng tư sản.",
+          },
+          {
+            title: "Vai trò mới",
+            content:
+              "Tiếp tục đấu tranh xóa bỏ chế độ tư bản và xây dựng XHCN. Làm chủ khoa học công nghệ, nâng cao năng lực sản xuất.",
+          },
+        ]}
+      />
+    </div>
   </FullscreenSection>
 );
 
-const Section3 = () => (
-  <FullscreenSection
-    id="section3"
-    title="III. Sứ mệnh lịch sử của giai cấp công nhân Việt Nam"
-    bgImage="https://images.unsplash.com/photo-1581091226825-a6a2a5aee158"
-  >
-    <Carousel
-      items={[
-        {
-          title: "Vai trò lịch sử",
-          content:
-            "Giai cấp công nhân Việt Nam là lực lượng tiên phong trong cuộc đấu giải phóng dân tộc và xây dựng chủ nghĩa xã hội.",
-        },
-        {
-          title: "Thực hiện sứ mệnh",
-          content:
-            "Đứng trước cơ hội và thách thức trong bối cảnh hội nhập quốc tế và cách mạng công nghiệp 4.0.",
-        },
-        {
-          title: "Giải pháp phát triển",
-          content: "Tăng cường đào tạo và giáo dục chính trị tư tưởng.",
-        },
-      ]}
-    />
-  </FullscreenSection>
+const CircularProgress = ({ value, label }) => (
+  <div className="relative w-32 h-32">
+    <svg className="w-full h-full" viewBox="0 0 100 100">
+      <circle
+        className="text-white/20 stroke-current"
+        strokeWidth="8"
+        fill="transparent"
+        r="40"
+        cx="50"
+        cy="50"
+      />
+      <motion.circle
+        initial={{ pathLength: 0 }}
+        whileInView={{ pathLength: value }}
+        className="text-blue-500 stroke-current"
+        strokeWidth="8"
+        strokeLinecap="round"
+        fill="transparent"
+        r="40"
+        cx="50"
+        cy="50"
+        style={{ transformOrigin: "50% 50%", rotate: -90 }}
+      />
+    </svg>
+    <div className="absolute inset-0 flex items-center justify-center text-white font-bold">
+      {label}
+    </div>
+  </div>
 );
+
+// Section 3 Component
+const Section3 = () => {
+  const [activeTab, setActiveTab] = useState(0);
+
+  return (
+    <FullscreenSection
+      id="section3"
+      title="III. Sứ mệnh lịch sử của giai cấp công nhân Việt Nam"
+      bgImage="https://images.unsplash.com/photo-1581091226825-a6a2a5aee158"
+    >
+      <div className="max-w-6xl mx-auto space-y-12">
+        {/* Progress Indicators */}
+        <div className="grid grid-cols-3 gap-8 justify-items-center">
+          <CircularProgress value={0.75} label="Tiên phong" />
+          <CircularProgress value={0.85} label="Đổi mới" />
+          <CircularProgress value={0.95} label="Phát triển" />
+        </div>
+
+        {/* Interactive Tabs */}
+        <div className="bg-white/10 backdrop-blur-md rounded-xl p-6 border border-white/20">
+          <div className="flex gap-4 mb-6">
+            {["Vai trò", "Thách thức", "Giải pháp"].map((tab, index) => (
+              <button
+                key={index}
+                onClick={() => setActiveTab(index)}
+                className={`px-6 py-2 rounded-full transition-all ${
+                  activeTab === index
+                    ? "bg-blue-500 text-white"
+                    : "bg-white/10 text-white/60 hover:bg-white/20"
+                }`}
+              >
+                {tab}
+              </button>
+            ))}
+          </div>
+
+          <AnimatePresence mode="wait">
+            <motion.div
+              key={activeTab}
+              initial={{ opacity: 0, y: 20 }}
+              animate={{ opacity: 1, y: 0 }}
+              exit={{ opacity: 0, y: -20 }}
+              className="space-y-6"
+            >
+              {activeTab === 0 && (
+                <div className="grid md:grid-cols-2 gap-6">
+                  <FeatureCard
+                    icon={GraduationCap}
+                    title="Lực lượng tiên phong"
+                    content="Trong giải phóng dân tộc và xây dựng XHCN"
+                    index={0}
+                  />
+                  <FeatureCard
+                    icon={Building2}
+                    title="Nòng cốt đổi mới"
+                    content="Trong công nghiệp hóa, hiện đại hóa đất nước"
+                    index={1}
+                  />
+                </div>
+              )}
+              {activeTab === 1 && (
+                <div className="grid md:grid-cols-2 gap-6">
+                  <FeatureCard
+                    icon={Target}
+                    title="Hội nhập quốc tế"
+                    content="Đối mặt với thách thức của toàn cầu hóa"
+                    index={0}
+                  />
+                  <FeatureCard
+                    icon={Lightbulb}
+                    title="Cách mạng 4.0"
+                    content="Thích ứng với công nghệ và tri thức mới"
+                    index={1}
+                  />
+                </div>
+              )}
+              {activeTab === 2 && (
+                <div className="grid md:grid-cols-3 gap-6">
+                  <FeatureCard
+                    icon={Book}
+                    title="Đào tạo"
+                    content="Nâng cao chất lượng đào tạo và giáo dục"
+                    index={0}
+                  />
+                  <FeatureCard
+                    icon={Users}
+                    title="Đời sống"
+                    content="Cải thiện điều kiện và quyền lợi"
+                    index={1}
+                  />
+                  <FeatureCard
+                    icon={Target}
+                    title="Lãnh đạo"
+                    content="Tăng cường sự lãnh đạo của Đảng"
+                    index={2}
+                  />
+                </div>
+              )}
+            </motion.div>
+          </AnimatePresence>
+        </div>
+      </div>
+    </FullscreenSection>
+  );
+};
 
 const Section4 = () => (
   <FullscreenSection
