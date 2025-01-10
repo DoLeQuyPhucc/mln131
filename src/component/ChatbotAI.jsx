@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useRef, Suspense } from "react";
+import React, { useState, useEffect, useRef } from "react";
 import {
   Send,
   User,
@@ -9,22 +9,23 @@ import {
   RefreshCw,
 } from "lucide-react";
 import { motion, AnimatePresence } from "framer-motion";
+import ReactMarkdown from "react-markdown";
 import { GoogleGenerativeAI } from "@google/generative-ai";
-import Scene3D from "./Scene3D";
 
 const genAI = new GoogleGenerativeAI(`AIzaSyD7QkI0e_P1igH4Cjdp3ZKoACFr5EcRDgU`);
 
 const INTRODUCTION = {
   name: "Duck Duck",
-  greeting: `Xin chào! Tôi là Duck Duck.
+  greeting: `### Xin chào! Tôi là Duck Duck.
 
-  Tôi được trang bị kiến thức chuyên sâu về:
-  • Quan điểm của chủ nghĩa Mác-Lênin về giai cấp công nhân
-  • Sứ mệnh lịch sử của giai cấp công nhân
-  • Thực trạng và thách thức hiện nay
-  • Vai trò của giai cấp công nhân Việt Nam
+Tôi được trang bị kiến thức chuyên sâu về:
 
-  Bạn có thể chọn một trong các câu hỏi gợi ý hoặc tự đặt câu hỏi. Tôi sẽ cố gắng trả lời chi tiết và chính xác nhất!`,
+* Quan điểm của chủ nghĩa Mác-Lênin về giai cấp công nhân
+* Sứ mệnh lịch sử của giai cấp công nhân
+* Thực trạng và thách thức hiện nay
+* Vai trò của giai cấp công nhân Việt Nam
+
+Bạn có thể chọn một trong các câu hỏi gợi ý hoặc tự đặt câu hỏi. Tôi sẽ cố gắng trả lời chi tiết và chính xác nhất!`,
 };
 
 const predefinedPrompts = [
@@ -34,11 +35,8 @@ const predefinedPrompts = [
   "Bác sĩ, giảng viên, IT hiện nay có phải là giai cấp công nhân không?",
 ];
 
-const FloatingButton = ({ onClick, isVisible, isOpen }) => {
+const FloatingButton = ({ onClick, isOpen }) => {
   const [isHovered, setIsHovered] = useState(false);
-
-  // Only render if isVisible is true
-  if (!isVisible) return null;
 
   return (
     <motion.button
@@ -49,16 +47,19 @@ const FloatingButton = ({ onClick, isVisible, isOpen }) => {
       onMouseEnter={() => setIsHovered(true)}
       onMouseLeave={() => setIsHovered(false)}
     >
-      <div className="relative w-10 h-10">
-        <Scene3D isHovered={isHovered} />
-      </div>
+      <motion.div
+        animate={isHovered ? { rotate: 360 } : {}}
+        transition={{ duration: 0.5 }}
+      >
+        <Bot className="w-6 h-6" />
+      </motion.div>
       {!isOpen && (
         <motion.div
           initial={{ scale: 0 }}
           animate={{ scale: 1 }}
           className="absolute -top-1 -right-1 w-5 h-5 bg-white rounded-full flex items-center justify-center"
         >
-          <MessageCircle className="w-3 h-3 text-red-600" />
+          <Sparkles className="w-3 h-3 text-red-600" />
         </motion.div>
       )}
     </motion.button>
@@ -78,9 +79,7 @@ const ChatMessage = ({ message, isUser }) => (
       {isUser ? (
         <User size={16} className="text-red-600" />
       ) : (
-        <div className="w-full h-full">
-          <Scene3D isHovered={false} />
-        </div>
+        <Bot size={16} className="text-gray-600" />
       )}
     </div>
     <div
@@ -90,7 +89,30 @@ const ChatMessage = ({ message, isUser }) => (
           : "bg-gray-50 text-gray-800"
       }`}
     >
-      {message.text}
+      {isUser ? (
+        message.text
+      ) : (
+        <ReactMarkdown
+          className="prose prose-sm max-w-none prose-headings:mb-2 prose-headings:mt-2 prose-p:mb-2 prose-ul:mb-2"
+          components={{
+            h3: ({ children }) => (
+              <h3 className="text-lg font-bold text-gray-800">{children}</h3>
+            ),
+            ul: ({ children }) => (
+              <ul className="list-disc ml-4 space-y-1">{children}</ul>
+            ),
+            li: ({ children }) => <li className="text-gray-700">{children}</li>,
+            p: ({ children }) => <p className="text-gray-700">{children}</p>,
+            strong: ({ children }) => (
+              <strong className="font-semibold text-gray-800">
+                {children}
+              </strong>
+            ),
+          }}
+        >
+          {message.text}
+        </ReactMarkdown>
+      )}
     </div>
   </motion.div>
 );
@@ -130,8 +152,8 @@ const ChatWindow = ({
           {/* Header */}
           <div className="flex items-center justify-between p-4 border-b">
             <div className="flex items-center gap-2">
-              <div className="w-8 h-8">
-                <Scene3D isHovered={false} />
+              <div className="w-8 h-8 bg-red-100 rounded-full flex items-center justify-center">
+                <Bot className="w-5 h-5 text-red-600" />
               </div>
               <h2 className="font-semibold">{INTRODUCTION.name}</h2>
             </div>
@@ -193,7 +215,16 @@ const ChatWindow = ({
             {isLoading && (
               <div className="flex gap-2 items-center">
                 <div className="w-8 h-8 rounded-full bg-gray-100 flex items-center justify-center">
-                  <Scene3D isHovered={true} />
+                  <motion.div
+                    animate={{ rotate: 360 }}
+                    transition={{
+                      duration: 2,
+                      repeat: Infinity,
+                      ease: "linear",
+                    }}
+                  >
+                    <Bot className="w-5 h-5 text-gray-600" />
+                  </motion.div>
                 </div>
                 <motion.div
                   animate={{ opacity: [0.4, 1, 0.4] }}
@@ -234,7 +265,6 @@ const ChatWindow = ({
 };
 
 const ChatbotAssistant = () => {
-  const [isVisible, setIsVisible] = useState(true); // New state for visibility
   const [isOpen, setIsOpen] = useState(false);
   const [messages, setMessages] = useState([]);
   const [isLoading, setIsLoading] = useState(false);
@@ -261,8 +291,6 @@ const ChatbotAssistant = () => {
     setIsOpen(false);
     setMessages([]);
     initChat();
-    // Don't hide the FloatingButton when closing chat
-    setIsVisible(true);
   };
 
   const handleOpen = () => {
@@ -298,11 +326,7 @@ const ChatbotAssistant = () => {
 
   return (
     <>
-      <FloatingButton
-        onClick={handleOpen}
-        isVisible={isVisible}
-        isOpen={isOpen}
-      />
+      <FloatingButton onClick={handleOpen} isOpen={isOpen} />
       <ChatWindow
         isOpen={isOpen}
         onClose={handleClose}
