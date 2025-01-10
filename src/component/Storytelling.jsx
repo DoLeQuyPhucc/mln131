@@ -14,6 +14,7 @@ import {
 } from "lucide-react";
 import { motion, AnimatePresence } from "framer-motion";
 import section3 from "../assets/thumbnail.jpg";
+import ChatbotAssistant from "./ChatbotAI";
 
 const TimelineNav = ({ currentSection }) => {
   const sections = [
@@ -33,7 +34,7 @@ const TimelineNav = ({ currentSection }) => {
   };
 
   return (
-    <div className="fixed right-8 top-1/2 transform -translate-y-1/2 z-50">
+    <div className="fixed right-8 top-1/2 transform -translate-y-1/2 z-40">
       <div className="flex flex-col items-center gap-4">
         {sections.map((section) => (
           <div
@@ -66,7 +67,7 @@ const StorySection = ({ children, bgImage, title, subtitle, id }) => (
     className="min-h-screen relative flex items-center justify-center overflow-hidden snap-start"
   >
     <div
-      className="absolute inset-0 bg-cover bg-center bg-no-repeat"
+      className="absolute inset-0 bg-cover bg-center bg-no-repeat z-0"
       style={{
         backgroundImage: `url(${bgImage})`,
         filter: "brightness(0.3)",

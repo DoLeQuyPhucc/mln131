@@ -1,14 +1,15 @@
 import { Suspense } from "react";
-import FloatingAssistantChatbot from "./component/ChatbotAI";
+import ChatbotAssistant from "./component/ChatbotAI";
 import HistoricalMissionPage from "./component/Content01";
 import StorytellingPage from "./component/Storytelling";
+import LoadingComponent from "./component/LoadingPage";
 
 function App() {
   return (
-    <Suspense fallback={<div>Loading...</div>}>
+    <Suspense fallback={<LoadingComponent />}>
       <StorytellingPage />
       {/* <HistoricalMissionPage /> */}
-      <FloatingAssistantChatbot />
+      <ChatbotAssistant />
     </Suspense>
   );
 }
