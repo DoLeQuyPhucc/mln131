@@ -254,21 +254,29 @@ const StorytellingPage = () => {
           <TimelineItem
             year="1. Bối cảnh hiện nay"
             title="Toàn cầu hóa và CMCN 4.0"
-            description="Tại Việt Nam, quá trình toàn cầu hóa và cách mạng công nghiệp 4.0 đang tạo ra những biến đổi mạnh mẽ. Các khu công nghiệp hiện đại, nhà máy thông minh và số hóa sản xuất đang dần trở nên phổ biến, đặt ra những thách thức và cơ hội mới cho người lao động."
+            description="Quá trình toàn cầu hóa và cách mạng công nghiệp 4.0 đang tạo ra những biến đổi to lớn trong cơ cấu kinh tế - xã hội, ảnh hưởng đến giai cấp công nhân.
+Lực lượng công nhân không chỉ tập trung trong các ngành công nghiệp truyền thống mà còn mở rộng sang các ngành công nghiệp công nghệ cao, dịch vụ, và tri thức.
+"
             isRight={false}
             image="https://bcp.cdnchinhphu.vn/Uploaded/nguyenhuythang/2021_12_08/digitaleconomy-818x460-15613879121091909436853-crop-15613879165961941291784.jpg"
           />
           <TimelineItem
             year="2. Thách thức"
             title="Thách thức đối với giai cấp công nhân"
-            description="Công nhân Việt Nam đang đối mặt với nhiều thách thức như: khoảng cách thu nhập ngày càng lớn, áp lực nâng cao trình độ công nghệ, điều kiện làm việc và nhà ở còn nhiều khó khăn. Đặc biệt tại các khu công nghiệp lớn, vấn đề nhà ở và đời sống của công nhân cần được quan tâm nhiều hơn."
+            description="Sự phân hóa giàu nghèo ngày càng sâu sắc trong xã hội tư bản.
+Lao động trong các ngành công nghệ và tri thức cao không hoàn toàn đồng nhất với lao động công nghiệp truyền thống, dẫn đến sự phân tầng trong chính nội bộ giai cấp công nhân.
+Sự xâm nhập của tư tưởng tư sản, ảnh hưởng đến ý thức tổ chức và tính cách mạng của giai cấp công nhân.
+"
             isRight={true}
             image="https://static.tapchimattran.vn/zoom/1300/uploaded/dodong/2022_02_16/nghien%20cuu/11_demd.jpg"
           />
           <TimelineItem
             year="3. Vai trò"
             title="Vai trò của giai cấp công nhân"
-            description="Giai cấp công nhân Việt Nam đang đóng vai trò quan trọng trong sự nghiệp công nghiệp hóa, hiện đại hóa đất nước. Họ không chỉ là lực lượng sản xuất chính mà còn là động lực cho sự đổi mới sáng tạo và phát triển bền vững của đất nước."
+            description="Tiếp tục giữ vai trò nòng cốt trong cuộc đấu tranh xóa bỏ chế độ tư bản và xây dựng xã hội xã hội chủ nghĩa.
+Tham gia tích cực vào quá trình đổi mới, sáng tạo, làm chủ khoa học công nghệ, nâng cao năng lực sản xuất và sức mạnh kinh tế.
+Duy trì tính tổ chức, đoàn kết, và ý thức cách mạng trong đấu tranh chính trị và kinh tế.
+"
             isRight={false}
             image="https://www.quanlynhanuoc.vn/wp-content/uploads/2019/08/cong-nhan.jpg"
           />
@@ -285,21 +293,21 @@ const StorytellingPage = () => {
           features={[
             {
               icon: Briefcase,
-              title: "Vai trò kinh tế",
+              title: "Vai trò của GCCN Việt Nam",
               description:
-                "Là lực lượng sản xuất chính trong nền kinh tế hiện đại, đóng góp trực tiếp vào sự phát triển của xã hội thông qua lao động sáng tạo.",
+                "Là lực lượng tiên phong trong cuộc đấu tranh giải phóng dân tộc, lật đổ chế độ thực dân phong kiến, giành độc lập và xây dựng chủ nghĩa xã hội.",
             },
             {
               icon: Share2,
-              title: "Vai trò chính trị",
+              title: "Sứ mệnh lịch sử",
               description:
-                "Lãnh đạo cách mạng xã hội chủ nghĩa, xây dựng và bảo vệ chế độ mới, thực hiện quyền làm chủ của nhân dân lao động.",
+                "Giai cấp công nhân Việt Nam đang đứng trước những cơ hội và thách thức trong bối cảnh hội nhập kinh tế quốc tế và cách mạng công nghiệp lần thứ tư.",
             },
             {
               icon: TrendingUp,
-              title: "Vai trò văn hóa",
+              title: "Giải pháp phát huy vai trò",
               description:
-                "Xây dựng nền văn hóa tiên tiến, đậm đà bản sắc dân tộc, góp phần nâng cao đời sống tinh thần của nhân dân.",
+                "Nâng cao chất lượng đào tạo và giáo dục chính trị tư tưởng cho công nhân. Cải thiện điều kiện lao động và đời sống, đảm bảo quyền lợi của giai cấp công nhân.",
             },
           ]}
         />
